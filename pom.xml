@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>libertysystems</groupId>
     <artifactId>Stenographer</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,11 +24,15 @@
     </dependencies>
     <distributionManagement>
         <repository>
-            <snapshots />
-            <id>snapshots</id>
-            <name>libs-snapshot-local</name>
+            <id>celtechRepo</id>
+            <name>CELTech releases</name>
+            <url>http://54.229.31.30:8080/artifactory/libs-release-local</url>
+        </repository>        
+        <snapshotRepository>
+            <id>celtechRepo</id>
+            <name>CELTech snapshots</name>
             <url>http://54.229.31.30:8080/artifactory/libs-snapshot-local</url>
-        </repository>
+        </snapshotRepository>
     </distributionManagement>
     <name>Stenographer</name>
     <build>
@@ -70,7 +74,7 @@
                       Prevents deployments from dev workstations so that they can be done by a CI
                       server
                     -->
-                    <noDeploy>true</noDeploy>
+                    <noDeploy>false</noDeploy>
                     <flowInitContext>
                         <!--
                           You can customize your development branch name. Why? Because it's faster to type
