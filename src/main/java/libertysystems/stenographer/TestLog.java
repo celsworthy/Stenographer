@@ -7,7 +7,7 @@ package libertysystems.stenographer;
 /**
  *
  * @author Ian Hudson
- * @ Liberty Systems Limited
+ * Liberty Systems Limited
  */
 public class TestLog
 {
