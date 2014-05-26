@@ -24,11 +24,15 @@
     </dependencies>
     <distributionManagement>
         <repository>
-            <snapshots />
-            <id>snapshots</id>
-            <name>libs-snapshot-local</name>
+            <id>celtechRepo</id>
+            <name>CELTech releases</name>
+            <url>http://54.229.31.30:8080/artifactory/libs-release-local</url>
+        </repository>        
+        <snapshotRepository>
+            <id>celtechRepo</id>
+            <name>CELTech snapshots</name>
             <url>http://54.229.31.30:8080/artifactory/libs-snapshot-local</url>
-        </repository>
+        </snapshotRepository>
     </distributionManagement>
     <name>Stenographer</name>
     <build>
