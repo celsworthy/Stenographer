@@ -5,6 +5,7 @@
 package libertysystems.stenographer;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.HashMap;
 import libertysystems.configuration.ConfigNotLoadedException;
 import libertysystems.configuration.Configuration;
@@ -14,19 +15,13 @@ import org.apache.log4j.*;
  *
  * This class allows Stenographer logging objects to be created.
  *
- * Instantiate a Stenographer like this: Stenographer steno =
- * StenographerFactory.getStenographer("nameToAppearInLog");
+ * Instantiate a Stenographer like this: Stenographer steno = StenographerFactory.getStenographer("nameToAppearInLog");
  *
- * To configure the behaviour of the loggers create Stenographer.properties in
- * the working directory. The following entries show the default configuration
- * that will be used if no file is provided (and is in the format required by
- * the file). logfilename=nologname.log loglevel=INFO logmode=LOCAL logtee=YES
+ * To configure the behaviour of the loggers create Stenographer.properties in the working directory. The following entries show the default configuration that will be used if no file is provided (and
+ * is in the format required by the file). logfilename=nologname.log loglevel=INFO logmode=LOCAL logtee=YES
  *
- * logfilename - name of file (necessary in local mode) loglevel - one of OFF,
- * DEBUG, INFO, WARNING or ERROR logmode - LOCAL or REMOTE (LOCAL is to file -
- * REMOTE is to syslog) logtee - NO or YES (controls whether logging is copied
- * to the console or not) maxfilesize - value as a string e.g. 10MB or 1GB (the
- * default is 20MB)
+ * logfilename - name of file (necessary in local mode) loglevel - one of OFF, DEBUG, INFO, WARNING or ERROR logmode - LOCAL or REMOTE (LOCAL is to file - REMOTE is to syslog) logtee - NO or YES
+ * (controls whether logging is copied to the console or not) maxfilesize - value as a string e.g. 10MB or 1GB (the default is 20MB)
  *
  * @author Ian Hudson
  */
@@ -44,12 +39,9 @@ public class StenographerFactory
     /**
      * Returns a Stenographer object that provides logging facilities.
      *
-     * This method will return a new object for each unique logAs string that is
-     * provided. Successive calls to the method with the same string will yield
-     * a reference to the same object.
+     * This method will return a new object for each unique logAs string that is provided. Successive calls to the method with the same string will yield a reference to the same object.
      *
-     * @param logAs The string that will appear in the log - usually the
-     * classname e.g. this.getClass().getCanonicalName()
+     * @param logAs The string that will appear in the log - usually the classname e.g. this.getClass().getCanonicalName()
      *
      * @return a Stenographer object
      *
@@ -159,24 +151,26 @@ public class StenographerFactory
             //Not implemented yet - syslog appender
             System.err.println("Didn't recognise Stenographer mode '" + logmode + "' from config file " + logfilename);
         }
+
         Stenographer steno = new Stenographer("StenographerFactory", initialLogLevel);
+
+        // Redirect stderr and stdout to the root logger
+        System.setErr(new PrintStream(new LoggingOutputStream(rootLogger, Level.ERROR), true));
+        System.setOut(new PrintStream(new LoggingOutputStream(rootLogger, Level.INFO), true));
+
         steno.info(
-                "StenographerFactory initialised with logfile=" + logfilename + " loglevel=" + initialLoglevelString + " logmode=" + logmode);
+            "StenographerFactory initialised with logfile=" + logfilename + " loglevel=" + initialLoglevelString + " logmode=" + logmode);
 
         return success;
     }
 
     /**
-     * Allows the log level for a specific Stenographer to be changed without
-     * using the object directly.
+     * Allows the log level for a specific Stenographer to be changed without using the object directly.
      *
-     * This method will change the log level for the Stenographer specified by
-     * the loggingEntity string. E.g. if a Stenographer is created with
-     * StenographerFactory.getStenographer("fred"); you can alter the log level
-     * as follows: StenographerFactory.changeLogLevel("fred", LogLevel.OFF);
+     * This method will change the log level for the Stenographer specified by the loggingEntity string. E.g. if a Stenographer is created with StenographerFactory.getStenographer("fred"); you can
+     * alter the log level as follows: StenographerFactory.changeLogLevel("fred", LogLevel.OFF);
      *
-     * @param loggingEntity The string by which the Stenographer is identified
-     * in the log.
+     * @param loggingEntity The string by which the Stenographer is identified in the log.
      *
      * @param newLevel The logging level to be applied to this entity.
      *
