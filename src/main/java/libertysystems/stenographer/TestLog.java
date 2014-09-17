@@ -23,5 +23,7 @@ public class TestLog
         String a = System.getProperty("user.home") + "\\/fred/f";
         steno.info(a);
         steno.info(a.replaceAll("\\\\", "/"));
+        
+        throw new NumberFormatException("This is a fake");
     }
 }
