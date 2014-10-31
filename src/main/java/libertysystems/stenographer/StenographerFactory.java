@@ -10,6 +10,7 @@ import java.util.HashMap;
 import libertysystems.configuration.ConfigNotLoadedException;
 import libertysystems.configuration.Configuration;
 import org.apache.log4j.*;
+import org.apache.log4j.varia.LevelMatchFilter;
 
 /**
  *
@@ -96,10 +97,14 @@ public class StenographerFactory
 
         //Set up a basic console logger so the Commons Config stuff doesn't barf
         Logger rootLogger = Logger.getRootLogger();
-        PatternLayout pattern = new PatternLayout("%d [%t] %p %l - %m%n");
 
         rootLogger.setLevel(Level.ERROR);
-        rootLogger.addAppender(new ConsoleAppender(pattern));
+
+        LevelDependentPatternLayout levelDependentLayout = new LevelDependentPatternLayout("%d [%t] %p - %m%n", "%d [%t] %p %l - %m%n", "%m%n");
+
+        ConsoleAppender consoleAppender = new ConsoleAppender(levelDependentLayout);
+
+        rootLogger.addAppender(consoleAppender);
 
         try
         {
@@ -131,9 +136,9 @@ public class StenographerFactory
 
             try
             {
-                RollingFileAppender rollingAppender = new RollingFileAppender(pattern, testFilename, true);
-                rollingAppender.setMaxFileSize(maxfilesize);
-                rootLogger.addAppender(rollingAppender);
+                RollingFileAppender defaultRollingAppender = new RollingFileAppender(levelDependentLayout, testFilename, true);
+                defaultRollingAppender.setMaxFileSize(maxfilesize);
+                rootLogger.addAppender(defaultRollingAppender);
             } catch (IOException ex)
             {
                 System.err.println("Stenographer failed to access " + testFilename + " for logging");
@@ -141,7 +146,7 @@ public class StenographerFactory
 
             if (logtee.equalsIgnoreCase("YES"))
             {
-                rootLogger.addAppender(new ConsoleAppender(pattern));
+                rootLogger.addAppender(consoleAppender);
             }
 
             success = true;

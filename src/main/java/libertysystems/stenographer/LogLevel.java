@@ -31,7 +31,8 @@ public enum LogLevel
     INFO(3, false, Level.INFO), INFO_ONLY(3, true, Level.INFO),
     WARNING(4, false, Level.WARN), WARNING_ONLY(4, true, Level.WARN),
     ERROR(5, false, Level.ERROR), ERROR_ONLY(5, true, Level.ERROR),
-    ALL (6, false, Level.ALL);
+    PASSTHROUGH(6, false, Level.FATAL),
+    ALL (10, false, Level.ALL);
     
     private final int logValue;
     private final boolean singleLevelLog;

@@ -106,10 +106,20 @@ public class Stenographer
     }
 
     /**
+     * Logs a message at LogLevel.DEBUG
+     *
+     * @param message The message to add to the log.
+     *
+     */
+    public void passthrough(String message)
+    {
+        this.log(message, LogLevel.PASSTHROUGH);
+    }
+
+    /**
      * Allows the log level for a specific Stenographer to be changed directly.
      *
-     * This method will change the log level for the Stenographer independently
-     * from other instances.
+     * This method will change the log level for the Stenographer independently from other instances.
      *
      * @param newLevel The logging level to be applied to this entity.
      *
