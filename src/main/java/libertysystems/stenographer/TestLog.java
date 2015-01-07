@@ -25,7 +25,7 @@ public class TestLog
 
         steno.debug("This is debug");
         steno.passthrough("This is passthrough");
-
-//        throw new NumberFormatException("This is a fake");
+System.err.println("Error through system");
+        throw new NumberFormatException("This is a fake");
     }
 }

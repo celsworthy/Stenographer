@@ -10,7 +10,6 @@ import java.util.HashMap;
 import libertysystems.configuration.ConfigNotLoadedException;
 import libertysystems.configuration.Configuration;
 import org.apache.log4j.*;
-import org.apache.log4j.varia.LevelMatchFilter;
 
 /**
  *
@@ -160,8 +159,8 @@ public class StenographerFactory
         Stenographer steno = new Stenographer("StenographerFactory", initialLogLevel);
 
         // Redirect stderr and stdout to the root logger
-        System.setErr(new PrintStream(new LoggingOutputStream(rootLogger, Level.ERROR), true));
-        System.setOut(new PrintStream(new LoggingOutputStream(rootLogger, Level.INFO), true));
+        System.setErr(new PrintStream(new LoggingOutputStream(rootLogger, Level.FATAL), true));
+        System.setOut(new PrintStream(new LoggingOutputStream(rootLogger, Level.FATAL), true));
 
         steno.info(
             "StenographerFactory initialised with logfile=" + logfilename + " loglevel=" + initialLoglevelString + " logmode=" + logmode);

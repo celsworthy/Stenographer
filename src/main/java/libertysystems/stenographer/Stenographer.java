@@ -130,4 +130,15 @@ public class Stenographer
         currentLogLevel = newLevel;
         logger.setLevel(newLevel.getLog4JLevel());
     }
+    
+    /**
+     * Returns the log level of this Stenographer
+     * @return 
+     *
+     * @see StenographerFactory LogLevel
+     */
+    public LogLevel getCurrentLogLevel()
+    {
+        return currentLogLevel;
+    }
 }
