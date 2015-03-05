@@ -15,13 +15,18 @@ import org.apache.log4j.*;
  *
  * This class allows Stenographer logging objects to be created.
  *
- * Instantiate a Stenographer like this: Stenographer steno = StenographerFactory.getStenographer("nameToAppearInLog");
+ * Instantiate a Stenographer like this: Stenographer steno =
+ * StenographerFactory.getStenographer("nameToAppearInLog");
  *
- * To configure the behaviour of the loggers create Stenographer.properties in the working directory. The following entries show the default configuration that will be used if no file is provided (and
- * is in the format required by the file). logfilename=nologname.log loglevel=INFO logmode=LOCAL logtee=YES
+ * To configure the behaviour of the loggers create Stenographer.properties in the working
+ * directory. The following entries show the default configuration that will be used if no file is
+ * provided (and is in the format required by the file). logfilename=nologname.log loglevel=INFO
+ * logmode=LOCAL logtee=YES
  *
- * logfilename - name of file (necessary in local mode) loglevel - one of OFF, DEBUG, INFO, WARNING or ERROR logmode - LOCAL or REMOTE (LOCAL is to file - REMOTE is to syslog) logtee - NO or YES
- * (controls whether logging is copied to the console or not) maxfilesize - value as a string e.g. 10MB or 1GB (the default is 20MB)
+ * logfilename - name of file (necessary in local mode) loglevel - one of OFF, DEBUG, INFO, WARNING
+ * or ERROR logmode - LOCAL or REMOTE (LOCAL is to file - REMOTE is to syslog) logtee - NO or YES
+ * (controls whether logging is copied to the console or not) maxfilesize - value as a string e.g.
+ * 10MB or 1GB (the default is 20MB)
  *
  * @author Ian Hudson
  */
@@ -39,9 +44,12 @@ public class StenographerFactory
     /**
      * Returns a Stenographer object that provides logging facilities.
      *
-     * This method will return a new object for each unique logAs string that is provided. Successive calls to the method with the same string will yield a reference to the same object.
+     * This method will return a new object for each unique logAs string that is provided.
+     * Successive calls to the method with the same string will yield a reference to the same
+     * object.
      *
-     * @param logAs The string that will appear in the log - usually the classname e.g. this.getClass().getCanonicalName()
+     * @param logAs The string that will appear in the log - usually the classname e.g.
+     * this.getClass().getCanonicalName()
      *
      * @return a Stenographer object
      *
@@ -99,7 +107,8 @@ public class StenographerFactory
 
         rootLogger.setLevel(Level.ERROR);
 
-        LevelDependentPatternLayout levelDependentLayout = new LevelDependentPatternLayout("%d [%t] %p - %m%n", "%d [%t] %p %l - %m%n", "%m%n");
+        LevelDependentPatternLayout levelDependentLayout = new LevelDependentPatternLayout(
+            "%d [%t] %p - %m%n", "%d [%t] %p %l - %m%n", "%m%n");
 
         ConsoleAppender consoleAppender = new ConsoleAppender(levelDependentLayout);
 
@@ -108,15 +117,19 @@ public class StenographerFactory
         try
         {
             Configuration sysConfig = Configuration.getInstance();
-            logfilename = sysConfig.getFilenameString(configComponentName, "logfilename", defaultLogFile);
-            initialLoglevelString = sysConfig.getString(configComponentName, "loglevel", defaultLogLevel);
+            logfilename = sysConfig.getFilenameString(configComponentName, "logfilename",
+                                                      defaultLogFile);
+            initialLoglevelString = sysConfig.getString(configComponentName, "loglevel",
+                                                        defaultLogLevel);
 
             logmode = sysConfig.getString(configComponentName, "logmode", defaultLogMode);
             logtee = sysConfig.getString(configComponentName, "logtee", defaultLogTee);
-            maxfilesize = sysConfig.getString(configComponentName, "maxfilesize", defaultMaxFilesize);
+            maxfilesize = sysConfig.
+                getString(configComponentName, "maxfilesize", defaultMaxFilesize);
         } catch (ConfigNotLoadedException ex)
         {
-            System.err.println("Couldn't get Stenographer configuration - config file could not be loaded - using defaults");
+            System.err.println(
+                "Couldn't get Stenographer configuration - config file could not be loaded - using defaults");
             logfilename = defaultLogFile;
             initialLoglevelString = defaultLogLevel;
             logmode = defaultLogMode;
@@ -135,7 +148,8 @@ public class StenographerFactory
 
             try
             {
-                RollingFileAppender defaultRollingAppender = new RollingFileAppender(levelDependentLayout, testFilename, true);
+                RollingFileAppender defaultRollingAppender = new RollingFileAppender(
+                    levelDependentLayout, testFilename, true);
                 defaultRollingAppender.setMaxFileSize(maxfilesize);
                 rootLogger.addAppender(defaultRollingAppender);
             } catch (IOException ex)
@@ -153,7 +167,8 @@ public class StenographerFactory
         } else
         {
             //Not implemented yet - syslog appender
-            System.err.println("Didn't recognise Stenographer mode '" + logmode + "' from config file " + logfilename);
+            System.err.println("Didn't recognise Stenographer mode '" + logmode
+                + "' from config file " + logfilename);
         }
 
         Stenographer steno = new Stenographer("StenographerFactory", initialLogLevel);
@@ -163,16 +178,20 @@ public class StenographerFactory
         System.setOut(new PrintStream(new LoggingOutputStream(rootLogger, Level.FATAL), true));
 
         steno.info(
-            "StenographerFactory initialised with logfile=" + logfilename + " loglevel=" + initialLoglevelString + " logmode=" + logmode);
+            "StenographerFactory initialised with logfile=" + logfilename + " loglevel="
+            + initialLoglevelString + " logmode=" + logmode);
 
         return success;
     }
 
     /**
-     * Allows the log level for a specific Stenographer to be changed without using the object directly.
+     * Allows the log level for a specific Stenographer to be changed without using the object
+     * directly.
      *
-     * This method will change the log level for the Stenographer specified by the loggingEntity string. E.g. if a Stenographer is created with StenographerFactory.getStenographer("fred"); you can
-     * alter the log level as follows: StenographerFactory.changeLogLevel("fred", LogLevel.OFF);
+     * This method will change the log level for the Stenographer specified by the loggingEntity
+     * string. E.g. if a Stenographer is created with StenographerFactory.getStenographer("fred");
+     * you can alter the log level as follows: StenographerFactory.changeLogLevel("fred",
+     * LogLevel.OFF);
      *
      * @param loggingEntity The string by which the Stenographer is identified in the log.
      *
@@ -197,4 +216,28 @@ public class StenographerFactory
 
         return success;
     }
+
+    /**
+     * Allows the log level for all Stenographers to be changed.
+     *
+     * @param newLevel The logging level to be applied to this entity.
+     *
+     * @return true for success and false for failure
+     *
+     * @see Stenographer
+     */
+    public static boolean changeLogLevel(LogLevel newLevel)
+    {
+        boolean success = false;
+
+        stenographers.values().forEach(stenographer ->
+        {
+            stenographer.changeLogLevel(newLevel);
+        });
+
+        success = true;
+
+        return success;
+    }
+
 }
