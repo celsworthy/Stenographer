@@ -33,7 +33,7 @@ import org.apache.log4j.*;
 public class StenographerFactory
 {
 
-    private static HashMap<String, Stenographer> stenographers = new HashMap<String, Stenographer>();
+    private static final HashMap<String, Stenographer> stenographers = new HashMap<>();
     private static boolean initialised = false;
     private static LogLevel initialLogLevel = null;
 
@@ -91,13 +91,11 @@ public class StenographerFactory
         String configComponentName = "Stenographer";
 
         String defaultLogFile = "nologname.log";
-        String defaultLogLevel = "INFO";
         String defaultLogMode = "LOCAL";
         String defaultLogTee = "YES";
         String defaultMaxFilesize = "20MB";
 
         String logfilename = null;
-        String initialLoglevelString = null;
         String logmode = null;
         String logtee = null;
         String maxfilesize = null;
@@ -119,8 +117,6 @@ public class StenographerFactory
             Configuration sysConfig = Configuration.getInstance();
             logfilename = sysConfig.getFilenameString(configComponentName, "logfilename",
                                                       defaultLogFile);
-            initialLoglevelString = sysConfig.getString(configComponentName, "loglevel",
-                                                        defaultLogLevel);
 
             logmode = sysConfig.getString(configComponentName, "logmode", defaultLogMode);
             logtee = sysConfig.getString(configComponentName, "logtee", defaultLogTee);
@@ -131,13 +127,12 @@ public class StenographerFactory
             System.err.println(
                 "Couldn't get Stenographer configuration - config file could not be loaded - using defaults");
             logfilename = defaultLogFile;
-            initialLoglevelString = defaultLogLevel;
             logmode = defaultLogMode;
             logtee = defaultLogTee;
             maxfilesize = defaultMaxFilesize;
         }
 
-        initialLogLevel = LogLevel.valueOf(initialLoglevelString);
+        initialLogLevel = LogLevel.TRACE;
 
         // Leave the root logger set at its lowest level - Stenographer will sort out whether to log or not
         rootLogger.setLevel(Level.WARN);
@@ -179,7 +174,7 @@ public class StenographerFactory
 
         steno.info(
             "StenographerFactory initialised with logfile=" + logfilename + " loglevel="
-            + initialLoglevelString + " logmode=" + logmode);
+            + " logmode=" + logmode);
 
         return success;
     }
@@ -226,7 +221,7 @@ public class StenographerFactory
      *
      * @see Stenographer
      */
-    public static boolean changeLogLevel(LogLevel newLevel)
+    public static boolean changeAllLogLevels(LogLevel newLevel)
     {
         boolean success = false;
 
