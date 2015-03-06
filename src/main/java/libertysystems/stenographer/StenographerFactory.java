@@ -224,6 +224,8 @@ public class StenographerFactory
     public static boolean changeAllLogLevels(LogLevel newLevel)
     {
         boolean success = false;
+        
+        initialLogLevel = newLevel;
 
         stenographers.values().forEach(stenographer ->
         {
