@@ -49,6 +49,23 @@ public class Stenographer
             logger.log(myFQCN, logLevel.getLog4JLevel(), message, null);
         }
     }
+    
+    /**
+     * Logs a message at the chosen LogLevel
+     *
+     * @param message The message to add to the log.
+     *
+     * @param logLevel The logging level to be applied to this entity.
+     *
+     * @see LogLevel
+     */
+    public void log(String message, LogLevel logLevel, Exception ex)
+    {
+        if (currentLogLevel.isLoggable(logLevel))
+        {
+            logger.log(myFQCN, logLevel.getLog4JLevel(), message, ex);
+        }
+    }    
 
     /**
      * Logs a message at LogLevel.TRACE
@@ -104,6 +121,17 @@ public class Stenographer
     {
         this.log(message, LogLevel.ERROR);
     }
+    
+    /**
+     * Logs a message at LogLevel.ERROR and also output the exception
+     *
+     * @param message The message to add to the log.
+     *
+     */
+    public void exception(String message, Exception ex)
+    {
+        this.log(message, LogLevel.ERROR, ex);
+    }    
 
     /**
      * Logs a message at LogLevel.DEBUG
