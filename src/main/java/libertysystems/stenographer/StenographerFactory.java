@@ -145,7 +145,9 @@ public class StenographerFactory
             {
                 RollingFileAppender defaultRollingAppender = new RollingFileAppender(
                     levelDependentLayout, testFilename, true);
+                defaultRollingAppender.rollOver();
                 defaultRollingAppender.setMaxFileSize(maxfilesize);
+                defaultRollingAppender.setMaxBackupIndex(4);
                 rootLogger.addAppender(defaultRollingAppender);
             } catch (IOException ex)
             {
